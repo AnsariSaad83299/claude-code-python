@@ -37,9 +37,9 @@ This project implements a full **tool-using autonomous agent loop** where the LL
 
 | Tool | Description | Parameters |
 |------|------------|------------|
-| `read_file` | Read file contents | `file_path` |
-| `write_file` | Write content to file | `file_path`, `content` |
-| `run_command` | Execute shell commands | `command` |
+| `Read` | Read file contents | `file_path` |
+| `Write` | Write content to file | `file_path`, `content` |
+| `Bash` | Execute shell commands | `command` |
 
 ---
 
@@ -64,25 +64,25 @@ export OPENROUTER_BASE_URL="https://openrouter.ai/api/v1
 
 ### Basic Example
 ```bash
-python main.py "Create a file hello.txt with Hello World"
+python main.py -p "Create a file hello.txt with Hello World"
 ```
 
 ### Real-World Tasks
 
 ### Refactor code
 ```bash
-python main.py "Refactor main.py to add proper error handling"
+python main.py -p "Refactor main.py to add proper error handling"
 ```
 
 
 ### Static analysis
 ```bash
-python main.py "Find all .py files and remove unused imports"
+python main.py -p "Find all .py files and remove unused imports"
 ```
 
 ### Multi-step workflow
 ```bash
-python main.py "Create a utils module, add a reverse_string function, write tests, and run them"
+python main.py -p "Create a utils module, add a reverse_string function, write tests, and run them"
 ```
 
 ## 🧠 Architecture
