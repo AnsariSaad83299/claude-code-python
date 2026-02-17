@@ -41,11 +41,12 @@ def main():
         raise RuntimeError("no choices in response")
     
     tool_calls = chat.choices[0].message.tool_calls
-    for tool_call in tool_calls:
-        if tool_call.function.name == 'Read':
-            file_path = json.loads(tool_call.function.arguments)['file_path']
-            with open(file_path) as file:
-                print(file.read())
+    if tool_calls:
+        for tool_call in tool_calls:
+            if tool_call.function.name == 'Read':
+                file_path = json.loads(tool_call.function.arguments)['file_path']
+                with open(file_path) as file:
+                    print(file.read())
 
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!", file=sys.stderr)
