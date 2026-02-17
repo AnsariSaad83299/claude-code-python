@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 import json
+import subprocess
 
 from openai import OpenAI
 
@@ -47,11 +48,29 @@ def main():
                 "content": {
                 "type": "string",
                 "description": "The content to write to the file"
+                    }
                 }
             }
+        }
+    }
+
+    bash_tool = {
+        "type": "function",
+        "function": {
+            "name": "Bash",
+            "description": "Execute a shell command",
+            "parameters": {
+            "type": "object",
+            "required": ["command"],
+            "properties": {
+                "command": {
+                "type": "string",
+                "description": "The command to execute"
+                    }
+                }
             }
         }
-}
+    }
 
     messages = [{"role": "user", "content": args.p}]
     while(True):
@@ -59,7 +78,7 @@ def main():
         chat = client.chat.completions.create(
             model= "anthropic/claude-haiku-4.5",
             messages= messages,
-            tools = [read_tool, write_tool]
+            tools = [read_tool, write_tool, bash_tool]
         )
 
         if not chat.choices or len(chat.choices) == 0:
@@ -86,6 +105,11 @@ def main():
                     content = function_args['content']
                     with open(file_path, 'w') as file:
                         file.write(content)
+
+                if tool_call.function.name == 'Bash':
+                    command = json.loads(tool_call.function.arguments)['command']
+                    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+                    content = result.stdout if result.returncode == 0 else result.stderr
 
                 messages.append({
                     'role': 'tool', 'tool_call_id' : tool_call.id, 'content' : content 
