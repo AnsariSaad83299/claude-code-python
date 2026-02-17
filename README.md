@@ -52,7 +52,7 @@ This project implements a full **tool-using autonomous agent loop** where the LL
 ### Setup
 
 ```bash
-git clone https://github.com/yourusername/claude-code-python.git
+git clone https://github.com/yourusername/claude-code-python.git](https://github.com/AnsariSaad83299/claude-code-python.git)
 cd claude-code-python
 
 pip install -r requirements.txt
