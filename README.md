@@ -55,7 +55,7 @@ This project implements a full **tool-using autonomous agent loop** where the LL
 git clone https://github.com/AnsariSaad83299/claude-code-python.git
 cd claude-code-python
 
-pip install -r requirements.txt
+pip install openai
 
 export OPENROUTER_API_KEY="your-api-key"
 export OPENROUTER_BASE_URL="https://openrouter.ai/api/v1
