@@ -43,7 +43,14 @@ def main():
         if not chat.choices or len(chat.choices) == 0:
             raise RuntimeError("no choices in response")
         
-        tool_calls = chat.choices[0].message.tool_calls
+        assisstant_message = chat.choices[0].message
+        messages.append({
+            'role' : 'assisstant',
+            'content' : assisstant_message.content,
+            'tool_calls' : assisstant_message.tool_calls
+        })
+
+        tool_calls = assisstant_message.tool_calls
         if tool_calls:
             for tool_call in tool_calls:
                 if tool_call.function.name == 'Read':
@@ -54,7 +61,7 @@ def main():
                         'role': 'tool', 'tool_call_id' : tool_call.id, 'content' : content 
                     })
         else:
-            print(chat.choices[0].message.content)
+            print(assisstant_message.content)
             break
 
     # You can use print statements as follows for debugging, they'll be visible when running tests.
