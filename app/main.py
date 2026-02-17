@@ -94,6 +94,7 @@ def main():
         tool_calls = assisstant_message.tool_calls
         if tool_calls:
             for tool_call in tool_calls:
+                content = ''
                 if tool_call.function.name == 'Read':
                     file_path = json.loads(tool_call.function.arguments)['file_path']
                     with open(file_path) as file:
