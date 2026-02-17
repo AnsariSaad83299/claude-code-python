@@ -31,28 +31,35 @@ def main():
         }    
     }
 
-    chat = client.chat.completions.create(
-        model="anthropic/claude-haiku-4.5",
-        messages=[{"role": "user", "content": args.p}],
-        tools = [read_tool]
-    )
+    messages = [{"role": "user", "content": args.p}]
+    while(True):
+        
+        chat = client.chat.completions.create(
+            model= "anthropic/claude-haiku-4.5",
+            messages= messages,
+            tools = [read_tool]
+        )
 
-    if not chat.choices or len(chat.choices) == 0:
-        raise RuntimeError("no choices in response")
-    
-    tool_calls = chat.choices[0].message.tool_calls
-    if tool_calls:
-        for tool_call in tool_calls:
-            if tool_call.function.name == 'Read':
-                file_path = json.loads(tool_call.function.arguments)['file_path']
-                with open(file_path) as file:
-                    print(file.read())
+        if not chat.choices or len(chat.choices) == 0:
+            raise RuntimeError("no choices in response")
+        
+        tool_calls = chat.choices[0].message.tool_calls
+        if tool_calls:
+            for tool_call in tool_calls:
+                if tool_call.function.name == 'Read':
+                    file_path = json.loads(tool_call.function.arguments)['file_path']
+                    with open(file_path) as file:
+                        content = file.read()
+                    messages.append({
+                        'role': 'tool', 'tool_call_id' : tool_call.id, 'content' : content 
+                    })
+        else:
+            print(chat.choices[0].message.content)
+            break
 
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!", file=sys.stderr)
-
-    # TODO: Uncomment the following line to pass the first stage
-    print(chat.choices[0].message.content)
+    
 
 
 if __name__ == "__main__":
