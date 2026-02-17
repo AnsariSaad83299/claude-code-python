@@ -45,7 +45,7 @@ def main():
         
         assisstant_message = chat.choices[0].message
         messages.append({
-            'role' : 'assisstant',
+            'role' : 'assistant',
             'content' : assisstant_message.content,
             'tool_calls' : assisstant_message.tool_calls
         })
